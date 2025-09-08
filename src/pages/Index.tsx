@@ -111,8 +111,90 @@ const Index = () => {
       <section className="py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-3xl font-bold text-center mb-12">Каталог автомобилей</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredCars.map((car) => (
+          
+          {selectedClass === 'all' ? (
+            // Show by classes
+            <>
+              {classes.filter(c => c.id !== 'all').map((carClass) => {
+                const classCars = cars.filter(car => car.class === carClass.id);
+                if (classCars.length === 0) return null;
+                
+                return (
+                  <div key={carClass.id} className="mb-16">
+                    <div className="flex items-center justify-center gap-3 mb-8">
+                      <Icon name={carClass.icon as any} size={24} className="text-primary" />
+                      <h4 className="text-2xl font-semibold">{carClass.name}</h4>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {classCars.map((car) => (
+                        <Card key={car.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                          <div className="relative">
+                            <img 
+                              src={car.image} 
+                              alt={car.name}
+                              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                            {car.discount > 0 && (
+                              <Badge className="absolute top-4 right-4 bg-secondary">
+                                -{car.discount}%
+                              </Badge>
+                            )}
+                          </div>
+                          <CardContent className="p-6">
+                            <div className="flex justify-between items-start mb-4">
+                              <h4 className="text-xl font-semibold">{car.name}</h4>
+                              <Badge variant="outline" className="text-primary">
+                                {classes.find(c => c.id === car.class)?.name}
+                              </Badge>
+                            </div>
+                            
+                            <div className="space-y-3 mb-6">
+                              <div className="flex items-center gap-4 text-sm text-gray-600">
+                                <span><Icon name="Calendar" size={16} className="inline mr-1" />{car.specs.year}</span>
+                                <span><Icon name="Gauge" size={16} className="inline mr-1" />{car.specs.engine}</span>
+                                <span><Icon name="Fuel" size={16} className="inline mr-1" />{car.specs.fuel}</span>
+                              </div>
+                              <div className="flex flex-wrap gap-2">
+                                {car.features.map((feature, index) => (
+                                  <Badge key={index} variant="secondary" className="text-xs">
+                                    {feature}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="flex justify-between items-center">
+                              <div>
+                                <div className="text-2xl font-bold text-primary">
+                                  {car.discount > 0 ? (
+                                    <>
+                                      <span className="text-lg line-through text-gray-400 mr-2">
+                                        {car.price} ₽
+                                      </span>
+                                      {Math.round(car.price * (1 - car.discount / 100))} ₽
+                                    </>
+                                  ) : (
+                                    `${car.price} ₽`
+                                  )}
+                                </div>
+                                <div className="text-sm text-gray-500">за сутки</div>
+                              </div>
+                              <Button className="bg-primary hover:bg-primary/90">
+                                Арендовать
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </>
+          ) : (
+            // Show filtered cars
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredCars.map((car) => (
               <Card key={car.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 group">
                 <div className="relative">
                   <img 
@@ -169,10 +251,11 @@ const Index = () => {
                       Арендовать
                     </Button>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
