@@ -50,7 +50,7 @@ const Index = () => {
   const filteredCars = selectedClass === 'all' ? cars : cars.filter(car => car.class === selectedClass);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-900">
       {/* Header */}
       <header className="bg-black text-white py-4 px-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -89,7 +89,7 @@ const Index = () => {
       </section>
 
       {/* Car Classes Filter */}
-      <section className="py-8 px-4 bg-gray-50">
+      <section className="py-8 px-4 bg-gray-800">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-center gap-4 flex-wrap">
             {classes.map((carClass) => (
@@ -177,7 +177,7 @@ const Index = () => {
       </section>
 
       {/* Conditions */}
-      <section className="py-16 px-4 bg-gray-50">
+      <section className="py-16 px-4 bg-gray-800">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-3xl font-bold text-center mb-12">Условия аренды</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
